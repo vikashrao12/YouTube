@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from "react";
 import Watch from "./pages/Watch";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
+import Profile from "./pages/Profile";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -23,6 +24,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/video/:id" element={<VideoPlayer />} />
             <Route path="/watch/:id" element={<Watch />} />
+            <Route path="/profile" element={<Profile />} />
+
 
             <Route
               path="/channel/:id"

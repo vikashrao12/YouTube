@@ -40,14 +40,17 @@ function Header({ onMenuClick, searchText, setSearchText }) {
 
 
       {user ? (
-        <button onClick={logout} className="font-medium">
-          {user.username}
-        </button>
+        <div className="flex items-center gap-4">
+          <Link to="/profile" className="font-medium">
+            {user.username}
+          </Link>
+        </div>
       ) : (
         <Link to="/login" className="font-medium">
           Sign In
         </Link>
       )}
+
 
     </header>
   );
