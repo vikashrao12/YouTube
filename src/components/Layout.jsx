@@ -10,9 +10,10 @@ function Layout({ children }) {
       <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
       <Sidebar isOpen={isSidebarOpen} />
 
-      <main className="pt-16 pl-0 md:pl-60 transition-all">
+      <main className="pt-16 md:pl-60 transition-all">
         {children}
       </main>
+
     </div>
   );
 }
