@@ -6,16 +6,21 @@ import sampleVideos from "../utils/sampleVideos";
 
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchText, setSearchText] = useState("");
 
-  const filteredVideos =
-    selectedCategory === "All"
-      ? sampleVideos
-      : sampleVideos.filter(
-        (video) => video.category === selectedCategory
-      );
+  const filteredVideos = sampleVideos.filter((video) => {
+    const matchesCategory =
+      selectedCategory === "All" || video.category === selectedCategory;
+
+    const matchesSearch = video.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <Layout>
+    <Layout searchText={searchText} setSearchText={setSearchText}>
       <FilterBar
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
