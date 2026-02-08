@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import Watch from "./pages/Watch";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/video/:id" element={<VideoPlayer />} />
           <Route path="/channel/:id" element={<Channel />} />
+          <Route path="/watch/:id" element={<Watch />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
