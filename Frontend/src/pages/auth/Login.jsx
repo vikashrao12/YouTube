@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { loginUserApi } from "../../api/authApi";
+
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -10,15 +12,22 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    login({
-      username: "Vikash",
-      email,
-    });
-    navagate("/");
+    try {
+      const res = await loginUserApi({ email, password });
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      login(res.data.user);
+      navagate("/");
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center">

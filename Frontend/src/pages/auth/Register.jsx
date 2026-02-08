@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { registerUserApi } from "../../api/authApi";
+
 
 function Register() {
   const navigate = useNavigate();
@@ -14,12 +16,15 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Register Data:", formData);
-
-    navigate("/login");
+    try {
+      await registerUserApi(formData);
+      navigate("/login");
+    } catch (err) {
+      alert(err.response?.data?.message || "Register failed");
+    }
   };
 
   return (
