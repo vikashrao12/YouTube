@@ -1,8 +1,10 @@
+import Layout from "../components/Layout";
+
 function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <Layout>
+      <h1 className="p-4 text-xl">Home Page</h1>
+    </Layout>
   );
 }
 
