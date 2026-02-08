@@ -3,6 +3,8 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import sampleVideos from "../utils/sampleVideos";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import CommentsSection from "../components/CommentsSection";
+
 
 function Watch() {
   const { id } = useParams();
@@ -31,7 +33,7 @@ function Watch() {
             {video.title}
           </h1>
 
-          {/* Channel + Actions */}
+          {/* Channel  Actions */}
           <div className="flex justify-between items-center mt-3">
             <div>
               <p className="font-medium">{video.channel}</p>
@@ -70,8 +72,10 @@ function Watch() {
             <p>{video.description}</p>
           </div>
         </div>
+        <CommentsSection videoId={id} />
 
-        {/* RIGHT: Related Videos */}
+
+        {/*  Related Videos */}
         <div className="w-full lg:w-80 flex flex-col gap-4">
           {sampleVideos
             .filter((v) => v.videoId !== id)
