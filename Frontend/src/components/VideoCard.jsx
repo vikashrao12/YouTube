@@ -14,7 +14,7 @@ function VideoCard({ video }) {
           <h3 className="font-medium text-sm line-clamp-2">
             {video.title}
           </h3>
-          <p className="text-xs text-gray-500">{video.channel}</p>
+          <p className="text-xs text-gray-500">{video.channelName}</p>
           <p className="text-xs text-gray-500">
             {video.views} views • {video.time}
           </p>

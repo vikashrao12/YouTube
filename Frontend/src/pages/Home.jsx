@@ -1,18 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VideoCard from "../components/VideoCard";
 import FilterBar from "../components/FilterBar";
-import sampleVideos from "../utils/sampleVideos";
+import { getAllVideos } from "../api/videoApi";
+
+
 
 function Home() {
+  const [videos, setVideos] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  useEffect(() => {
+    const fetchVideos = async () => {
+      const data = await getAllVideos();
+      setVideos(data);
+    };
 
-  const filteredVideos = sampleVideos.filter((video) => {
-    const matchesCategory =
-      selectedCategory === "All" || video.category === selectedCategory;
+    fetchVideos();
+  }, []);
 
-    return matchesCategory;
+  const filteredVideos = videos.filter((video) => {
+    return (
+      selectedCategory === "All" ||
+      video.category === selectedCategory
+    );
   });
+
 
   return (
     <>
