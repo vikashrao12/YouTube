@@ -26,11 +26,11 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/video/:id" element={<VideoPlayer />} />
             <Route path="/watch/:id" element={<Watch />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
 
-            <Route path="/channel/:id" element={<Channel />} />
-            <Route path="/create-channel" element={<CreateChannel />} />
+            <Route path="/channel/:id" element={<ProtectedRoute><Channel /></ProtectedRoute>} />
+            <Route path="/create-channel" element={<ProtectedRoute><CreateChannel /></ProtectedRoute>} />
 
 
 

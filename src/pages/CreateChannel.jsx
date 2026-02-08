@@ -1,32 +1,47 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function CreateChannel() {
   const [channelName, setChannelName] = useState("");
   const [description, setDescription] = useState("");
+
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
 
+    if (!channelName.trim()) {
+      alert("Channel name required");
+      return;
+    }
 
-    console.log({ channelName, description });
+    const channelId = "channel_" + Date.now();
 
-    navigate("/profile");
+    const updatedUser = {
+      ...user,
+      channelId,
+      channelName,
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    navigate(`/channel/${channelId}`);
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4">
-      <h2 className="text-xl font-semibold mb-4">Create Channel</h2>
+    <div className="max-w-xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Create Your Channel</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleCreate} className="space-y-4">
         <input
           type="text"
           placeholder="Channel Name"
           className="w-full border p-2 rounded"
           value={channelName}
           onChange={(e) => setChannelName(e.target.value)}
-          required
         />
 
         <textarea
