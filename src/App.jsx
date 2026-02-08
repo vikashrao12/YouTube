@@ -3,8 +3,8 @@ import { lazy, Suspense } from "react";
 import Watch from "./pages/Watch";
 
 const Home = lazy(() => import("./pages/Home"));
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
 const VideoPlayer = lazy(() => import("./pages/VideoPlayer"));
 const Channel = lazy(() => import("./pages/Channel"));
 

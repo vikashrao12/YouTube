@@ -1,7 +1,13 @@
 import { FaBars, FaSearch, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 
 function Header({ onMenuClick, searchText, setSearchText }) {
+
+
+  const { user, logout } = useContext(AuthContext);
   return (
     <header className="flex items-center justify-between px-4 py-2 border-b bg-white fixed top-0 w-full z-50">
 
@@ -31,13 +37,18 @@ function Header({ onMenuClick, searchText, setSearchText }) {
       </div>
 
       {/* Right */}
-      <Link
-        to="/login"
-        className="flex items-center gap-2 px-4 py-2 border rounded-full text-blue-600 font-medium"
-      >
-        <FaUserCircle className="text-xl" />
-        Sign In
-      </Link>
+
+
+      {user ? (
+        <button onClick={logout} className="font-medium">
+          {user.username}
+        </button>
+      ) : (
+        <Link to="/login" className="font-medium">
+          Sign In
+        </Link>
+      )}
+
     </header>
   );
 }

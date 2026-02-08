@@ -67,13 +67,14 @@ function Watch() {
             </div>
           </div>
 
+
+
           {/* Description */}
           <div className="mt-4 bg-gray-100 p-4 rounded-lg text-sm">
             <p>{video.description}</p>
           </div>
         </div>
         <CommentsSection videoId={id} />
-
 
         {/*  Related Videos */}
         <div className="w-full lg:w-80 flex flex-col gap-4">
