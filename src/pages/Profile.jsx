@@ -24,10 +24,11 @@ function Profile() {
         {!hasChannel ? (
           <Link
             to="/create-channel"
-            className="px-4 py-2 bg-red-600 text-white rounded"
+            className="inline-block mt-4 px-4 py-2 bg-black text-white rounded"
           >
             Create Channel
           </Link>
+
         ) : (
           <Link
             to={`/channel/${user.channelId}`}
@@ -39,7 +40,7 @@ function Profile() {
 
         <button
           onClick={logout}
-          className="px-4 py-2 bg-gray-200 rounded"
+          className="inline-block mt-4 px-4 py-2 bg-black text-white rounded"
         >
           Logout
         </button>

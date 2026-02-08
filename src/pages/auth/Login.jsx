@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { login } = useContext(AuthContext);
+  const navagate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +17,7 @@ function Login() {
       username: "Vikash",
       email,
     });
+    navagate("/");
   };
 
   return (

@@ -4,12 +4,14 @@ import Watch from "./pages/Watch";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
+import CreateChannel from "./pages/CreateChannel";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const VideoPlayer = lazy(() => import("./pages/VideoPlayer"));
 const Channel = lazy(() => import("./pages/Channel"));
+
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -27,14 +29,11 @@ function App() {
             <Route path="/profile" element={<Profile />} />
 
 
-            <Route
-              path="/channel/:id"
-              element={
-                <ProtectedRoute>
-                  <Channel />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/channel/:id" element={<Channel />} />
+            <Route path="/create-channel" element={<CreateChannel />} />
+
+
+
           </Routes>
         </Suspense>
       </Layout>
