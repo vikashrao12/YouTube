@@ -1,8 +1,10 @@
 import express from "express";
-import { getAllVideos,getVideoById,incrementViews,likeVideo,dislikeVideo } from "../controllers/videoController.js";
+import { getAllVideos,getVideoById,incrementViews,likeVideo,dislikeVideo,createVideo } from "../controllers/videoController.js";
 
 
 const router = express.Router();
+
+router.post("/", createVideo);
 
 router.get("/", getAllVideos);
 router.get("/:id", getVideoById); 
