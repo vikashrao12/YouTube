@@ -1,24 +1,40 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import sampleVideos from "../utils/sampleVideos";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import CommentsSection from "../components/CommentsSection";
 
-function Watch() {
-  const { id } = useParams();
-  const video = sampleVideos.find((v) => v.videoId === id);
+const API_URL = "http://localhost:3000/api/videos";
 
+function Watch() {
+  const { id } = useParams(); // MongoDB _id
+  const [video, setVideo] = useState(null);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/${id}`);
+        setVideo(res.data);
+      } catch (err) {
+        console.error("Error fetching video:", err);
+        setVideo(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideo();
+  }, [id]);
+
+  if (loading) return <div className="p-4">Loading...</div>;
   if (!video) return <div className="p-4">Video not found</div>;
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-4">
-
-
       <div className="flex-1">
-
         <video
           src={video.videoUrl}
           controls
@@ -26,17 +42,13 @@ function Watch() {
           className="w-full rounded-xl"
         />
 
-        <h1 className="mt-4 text-lg font-semibold">
-          {video.title}
-        </h1>
+        <h1 className="mt-4 text-lg font-semibold">{video.title}</h1>
 
-        {/* Channel  Actions */}
+        {/* Channel Actions */}
         <div className="flex justify-between items-center mt-3">
           <div>
-            <p className="font-medium">{video.channel}</p>
-            <p className="text-sm text-gray-500">
-              {video.subscribers} subscribers
-            </p>
+            <p className="font-medium">{video.channelName}</p>
+            <p className="text-sm text-gray-500">{video.views} views</p>
           </div>
 
           <div className="flex gap-4">
@@ -73,25 +85,9 @@ function Watch() {
         <CommentsSection videoId={id} />
       </div>
 
-      {/* RIGHT Related Videos */}
+      {/* Right Related Videos */}
       <div className="w-full lg:w-80 flex flex-col gap-4">
-        {sampleVideos
-          .filter((v) => v.videoId !== id)
-          .slice(0, 6)
-          .map((v) => (
-            <div key={v.videoId} className="flex gap-3">
-              <img
-                src={v.thumbnailUrl}
-                className="w-40 rounded-lg"
-              />
-              <div>
-                <p className="text-sm font-medium line-clamp-2">
-                  {v.title}
-                </p>
-                <p className="text-xs text-gray-500">{v.channel}</p>
-              </div>
-            </div>
-          ))}
+
       </div>
     </div>
   );
