@@ -5,22 +5,45 @@ import Video from "../models/Video.js";
 export const createChannel = async (req, res) => {
   try {
     const { name, description, owner } = req.body;
-    console.log(name,description,owner);
 
     if (!name || !owner) {
       return res.status(400).json({ message: "Name and owner required" });
     }
 
-    const channel = new Channel({ name, description, owner });
-    await channel.save();
+    // 🔴 already exists check
+    const existing = await Channel.findOne({ owner });
+    if (existing) {
+      return res.status(400).json({ message: "Channel already exists" });
+    }
 
-    res.status(201).json(channel);
+    // 1️⃣ create channel
+    const channel = await Channel.create({
+      name,
+      description,
+      owner,
+    });
+
+    // 2️⃣ update user
+    const user = await User.findById(owner);
+    if (!user) {
+      await Channel.findByIdAndDelete(channel._id); // rollback
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    user.channelName = channel.name;
+    user.channelId = channel._id;
+    await user.save();
+
+    // ✅ ONLY SUCCESS RESPONSE
+    return res.status(201).json({
+      channel,
+      user,
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to create channel" });
+    console.error("CREATE CHANNEL ERROR:", err);
+    return res.status(500).json({ message: "Failed to create channel" });
   }
 };
-
 // Get all videos 
 export const getUserVideos = async (req, res) => {
   try {

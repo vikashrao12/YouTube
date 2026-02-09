@@ -10,12 +10,12 @@ function Profile() {
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user's channel from backend
+  // Fetch users channel from backend
   useEffect(() => {
     const fetchChannel = async () => {
       if (!user) return;
       try {
-        const res = await axios.get(`${API_URL}/user/${user.id}`);
+        const res = await axios.get(`${API_URL}/user/${user._id}`);
 
         setChannel(res.data);
       } catch (err) {

@@ -1,57 +1,69 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
-const API_URL = "http://localhost:3000/api/videos";
+const VIDEO_API = "http://localhost:3000/api/videos";
+const CHANNEL_API = "http://localhost:3000/api/channels/user";
 
 function UploadVideoForm({ onAdd }) {
-  const { user } = useContext(AuthContext); // get logged-in user
+  const { user } = useContext(AuthContext);
+  const [channel, setChannel] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
-  const [category, setCategory] = useState("General");
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("General");
+
+  // 🔥 fetch channel by logged-in user
+  useEffect(() => {
+    if (!user?._id) return;
+
+    axios
+      .get(`${CHANNEL_API}/${user._id}`)
+      .then((res) => setChannel(res.data))
+      .catch(() => setChannel(null));
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !videoUrl) {
-      alert("Title and Video URL required");
+    if (!user?._id) {
+      alert("Please login first");
       return;
     }
 
-    if (!user) {
-      alert("You must be logged in to upload a video");
+    if (!channel) {
+      alert("Please create a channel before uploading videos");
       return;
     }
 
-    setLoading(true);
+    if (!title.trim() || !thumbnail.trim()) {
+      alert("Title and thumbnail required");
+      return;
+    }
 
     try {
-      // Send video data to backend
-      const res = await axios.post(API_URL, {
-        title,
-        videoUrl,
-        thumbnailUrl: thumbnail,
-        category,
+      setLoading(true);
+
+      const res = await axios.post(VIDEO_API, {
+        title: title.trim(),
+        thumbnailUrl: thumbnail.trim(),
         description,
-        channelName: user.username, // or user.channelName if you have
-        uploader: user.id,
+        category,
+        channelName: channel.name,   //  from DB
+        uploader: user._id,
       });
 
-      // Update parent component state
-      onAdd(res.data.video);
+      onAdd && onAdd(res.data.video);
 
-      // Reset form
       setTitle("");
       setThumbnail("");
-      setVideoUrl("");
       setDescription("");
       setCategory("General");
     } catch (err) {
-      console.error("Video upload failed:", err);
-      alert("Failed to upload video");
+      console.error(err.response?.data || err);
+      alert("Video upload failed");
     } finally {
       setLoading(false);
     }
@@ -71,13 +83,6 @@ function UploadVideoForm({ onAdd }) {
         placeholder="Thumbnail URL"
         value={thumbnail}
         onChange={(e) => setThumbnail(e.target.value)}
-      />
-
-      <input
-        className="w-full border p-2 rounded"
-        placeholder="Video URL"
-        value={videoUrl}
-        onChange={(e) => setVideoUrl(e.target.value)}
       />
 
       <textarea
@@ -100,8 +105,8 @@ function UploadVideoForm({ onAdd }) {
       </select>
 
       <button
-        className="bg-black text-white px-4 py-2 rounded"
         disabled={loading}
+        className="bg-black text-white px-4 py-2 rounded disabled:opacity-60"
       >
         {loading ? "Uploading..." : "Upload Video"}
       </button>

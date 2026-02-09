@@ -10,10 +10,9 @@ const router = express.Router();
 
 
 router.post("/", createChannel);
-
-
-router.get("/:userId/videos", getUserVideos);
 router.get("/user/:userId", getChannelByUser);
+router.get("/:userId/videos", getUserVideos);
+
 
 
 router.delete("/video/:videoId", deleteVideo);

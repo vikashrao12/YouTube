@@ -1,22 +1,23 @@
-import { FaBars, FaSearch, FaUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaBars, FaSearch } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-
 function Header({ onMenuClick, searchText, setSearchText }) {
-
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (!searchText.trim()) return;
+    navigate(`/?search=${searchText}`);
+  };
 
   return (
     <header className="flex items-center justify-between px-4 py-2 border-b bg-white fixed top-0 w-full z-50">
 
       {/* Left */}
       <div className="flex items-center gap-4">
-        <FaBars
-          className="text-xl cursor-pointer"
-          onClick={onMenuClick}
-        />
+        <FaBars className="text-xl cursor-pointer" onClick={onMenuClick} />
         <Link to="/" className="text-xl font-bold text-red-600">
           YouTube
         </Link>
@@ -29,29 +30,27 @@ function Header({ onMenuClick, searchText, setSearchText }) {
           placeholder="Search"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           className="w-full px-4 py-2 border rounded-l-full focus:outline-none"
         />
-        <button className="px-4 py-2 border rounded-r-full bg-gray-100">
+        <button
+          onClick={handleSearch}
+          className="px-4 py-2 border rounded-r-full bg-gray-100"
+        >
           <FaSearch />
         </button>
       </div>
 
       {/* Right */}
-
-
       {user ? (
-        <div className="flex items-center gap-4">
-          <Link to="/profile" className="font-medium">
-            {user.username}
-          </Link>
-        </div>
+        <Link to="/profile" className="font-medium">
+          {user.username}
+        </Link>
       ) : (
         <Link to="/login" className="font-medium">
           Sign In
         </Link>
       )}
-
-
     </header>
   );
 }

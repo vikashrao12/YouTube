@@ -37,3 +37,29 @@ export const addComment = async (req, res) => {
     res.status(500).json({ message: "Error adding comment" });
   }
 };
+
+
+export const deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+
+  
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+  
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    await Comment.findByIdAndDelete(commentId);
+
+    res.json({ message: "Comment deleted successfully" });
+  } 
+  catch (err) {
+    console.log("DELETE COMMENT ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

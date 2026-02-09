@@ -71,14 +71,17 @@ export const loginUser = async (req, res) => {
     );
  
 
-    res.json({
+        res.json({
       message: "login success",
       token,
       user: {
-        id: user._id,
+        _id: user._id,              
         username: user.username,
         email: user.email,
+        channelId: user.channelId,  
+        channelName: user.channelName,
       },
+
     });
 
   } catch (error) {

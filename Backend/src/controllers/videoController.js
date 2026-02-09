@@ -87,16 +87,15 @@ export const dislikeVideo = async (req, res) => {
 
 export const createVideo = async (req, res) => {
   try {
-    const { title, videoUrl, thumbnailUrl, category, description, channelName, uploader } = req.body;
+    const { title, thumbnailUrl, category, description, channelName, uploader } = req.body;
 
     // Validation
-    if (!title || !videoUrl || !thumbnailUrl || !category || !channelName || !uploader) {
+    if (!title || !thumbnailUrl || !category || !channelName || !uploader) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const newVideo = new Video({
       title,
-      videoUrl,
       thumbnailUrl,
       category,
       description,
