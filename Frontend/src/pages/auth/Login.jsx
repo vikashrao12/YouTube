@@ -12,6 +12,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,6 +23,8 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       login(res.data.user);
+      setEmail("");
+      setPassword("");
       navagate("/");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");

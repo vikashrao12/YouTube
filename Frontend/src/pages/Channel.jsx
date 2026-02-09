@@ -37,7 +37,7 @@ function Channel() {
         {videos.map((video) => (
           <div key={video.videoId} className="border rounded p-3">
             <img
-              src={video.thumbnail}
+              src={video.thumbnailUrl}
               alt=""
               className="rounded mb-2"
             />

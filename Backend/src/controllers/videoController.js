@@ -39,3 +39,49 @@ export const getVideoById = async (req, res) => {
   }
 };
 
+
+// Increment view count
+export const incrementViews = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    video.views += 1;
+    await video.save();
+
+    res.status(200).json({ views: video.views });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to increment views" });
+  }
+};
+
+// Like video
+export const likeVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    video.likes += 1;
+    await video.save();
+
+    res.status(200).json({ likes: video.likes });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to like video" });
+  }
+};
+
+// Dislike video
+export const dislikeVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    video.dislikes += 1;
+    await video.save();
+
+    res.status(200).json({ dislikes: video.dislikes });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to dislike video" });
+  }
+};
+
